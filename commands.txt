@@ -1,0 +1,26 @@
+
+# compiling the code with gcc
+riscv64-unknown-elf-gcc -O0 -ggdb -nostdlib -march=rv32i -mabi=ilp32 -Wl,-Tm.ld m.s -o main.elf  
+
+#command for qumu:
+it takes elf and run it on its virtual machine.
+use gdb for looking inside gdb
+qemu-system-riscv32 -S -M virt -nographic -bios none -kernel main.elf -gdb tcp::1234  
+
+to exit from above command press "A" and then x
+
+
+#gdb command to connect it:
+gdb-multiarch main.elf -ex "target remote localhost:1234" -ex "break _start" -ex "continue" -q
+
+
+#object copy:
+riscv64-unknown-elf-objcopy -O binary main.elf main.bin
+
+
+#to print the binaries:
+xxd -e -c 4 -g 4 main.bin
+
+
+# we need to write an automation script to run these commands in a step wise manner so that we dont need to run then in terminal again and again:
+bash or make file can be used makefiles are easy to make 
